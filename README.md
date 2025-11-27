@@ -23,12 +23,12 @@ You can run the entire project with a single command using Docker.
    ```
 
 3. **Access the application**:
-   - Web App: [http://localhost:8080](http://localhost:8080)
-   - phpMyAdmin: [http://localhost:8081](http://localhost:8081)
+   - For Website: [http://localhost:8080](http://localhost:8080)
+   - For Database: [http://localhost:8081](http://localhost:8081)
 
 ### Database Access
 
-You can access the database in two ways:
+You can access the database by:
 
 1.  **Via phpMyAdmin (Recommended)**:
     - Open [http://localhost:8081](http://localhost:8081)
@@ -36,11 +36,6 @@ You can access the database in two ways:
     - Username: `root`
     - Password: `rootpassword`
 
-2.  **Via Local Client (e.g., MySQL Workbench)**:
-    - Host: `127.0.0.1`
-    - Port: `3307`
-    - Username: `root`
-    - Password: `rootpassword`
 
 ### Default Credentials
 
