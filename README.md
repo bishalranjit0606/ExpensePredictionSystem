@@ -42,15 +42,22 @@ You can access the database in two ways:
     - Username: `root`
     - Password: `rootpassword`
 
+### Default Credentials
+
+Use the following credentials to log in to the application:
+
+- **User Account**:
+  - Username: `tester`
+  - Password: `tester123`
+
+- **Admin Account**:
+  - Username: `admin`
+  - Password: `admin123`
+
 ### Stop the Application
 
 ```bash
 docker-compose down
 ```
 
-## Troubleshooting
 
-**"Mounts denied" on macOS:**
-If you see a "mounts denied" error, it means your project is in a directory not shared with Docker (like `/Applications/XAMPP`).
-- **Solution 1:** Move the project to your User directory (e.g., `~/Documents/ExpensePredictionSystem`).
-- **Solution 2:** Add the current path to Docker File Sharing resources in Docker Desktop settings.
