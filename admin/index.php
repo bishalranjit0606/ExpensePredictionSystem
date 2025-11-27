@@ -1,15 +1,15 @@
 <?php
 session_start();
-require_once 'db_config.php';
+require_once '../includes/db_config.php';
 
 if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: admin_login.php");
+    header("Location: login.php");
     exit();
 }
 
 if (isset($_POST['logout'])) {
     session_destroy();
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 ?>
@@ -34,7 +34,7 @@ if (isset($_POST['logout'])) {
             <button type="submit" name="logout" class="btn">Logout</button>
         </form>
         <h2>Admin Panel</h2>
-        <a href="admin_dashboard.php" class="btn">View User Expenses</a>
+        <a href="dashboard.php" class="btn">View User Expenses</a>
     </div>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'db_config.php';
+require_once '../includes/db_config.php';
 
 // Check if the user is logged in as an admin
 if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: admin_login.php");
+    header("Location: login.php");
     exit();
 }
 
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_user'])) {
         $conn->commit();
 
         // Redirect back to admin dashboard after successful deletion
-        header("Location: admin_dashboard.php");
+        header("Location: dashboard.php");
         exit();
 
     } catch (PDOException $e) {
@@ -53,7 +53,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Handle admin logout
 if (isset($_POST['logout'])) {
     session_destroy();
-    header("Location: index.php"); // Redirect to regular user login page
+    header("Location: ../index.php"); // Redirect to regular user login page
     exit();
 }
 ?>

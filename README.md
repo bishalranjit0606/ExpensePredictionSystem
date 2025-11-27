@@ -1,46 +1,40 @@
 # Expense Prediction System
 
-## Setup Instructions
+A web-based expense prediction system.
 
-### Step 1: Clone the Repository
-Clone the project into the htdocs folder of your XAMPP installation:
+## Quick Start (Docker)
+
+You can run the entire project with a single command using Docker.
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) installed.
+
+### Run the Application
+
+1. **Clone the repository** (if you haven't already):
+   ```bash
+   git clone <repository-url>
+   cd ExpensePredictionSystem
+   ```
+
+2. **Start the application**:
+   ```bash
+   docker-compose up -d --build
+   ```
+
+3. **Access the application**:
+   - Web App: [http://localhost:8080](http://localhost:8080)
+   - Database is automatically configured.
+
+### Stop the Application
 
 ```bash
-git clone https://github.com/bishalranjit0606/ExpensePredictionSystem.git
+docker-compose down
 ```
 
-### Step 2: Configure MySQL Port
+## Troubleshooting
 
-Open XAMPP.
-
-Navigate to Manage Servers > MySQL Database > Configure.
-
-Change the port from 3306 to 3307.
-
-Restart XAMPP.
-
-### Step 3: Open the Website
-
-Visit the following URL in your browser:
-```bash
-http://localhost/expense_prediction_system/index.php
-```
-## Login Credentials
-
-### User Account
-
-```bash
-
-Username: tester
-
-Password: tester123
-```
-
-### Admin Account
-```bash
-
-Username: admin
-
-Password: admin123
-```
-
+**"Mounts denied" on macOS:**
+If you see a "mounts denied" error, it means your project is in a directory not shared with Docker (like `/Applications/XAMPP`).
+- **Solution 1:** Move the project to your User directory (e.g., `~/Documents/ExpensePredictionSystem`).
+- **Solution 2:** Add the current path to Docker File Sharing resources in Docker Desktop settings.

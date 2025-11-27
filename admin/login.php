@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_config.php';
+require_once '../includes/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($admin && password_verify($password, $admin['password'])) {
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['role'] = 'admin';
-            header("Location: admin_dashboard.php");
+            header("Location: dashboard.php");
             exit();
         } else {
             $error = "Invalid admin credentials";
@@ -175,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn">Login</button>
         </form>
         <div class="link">
-            <a href="index.php">Back to User Login</a>
+            <a href="../index.php">Back to User Login</a>
         </div>
     </div>
 </body>

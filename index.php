@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['user_id']) || isset($_SESSION['admin_id'])) {
-    header("Location: " . (isset($_SESSION['admin_id']) ? "admin_dashboard.php" : "dashboard.php"));
+    header("Location: " . (isset($_SESSION['admin_id']) ? "admin/dashboard.php" : "user/dashboard.php"));
     exit();
 }
 ?>
@@ -72,9 +72,9 @@ if (isset($_SESSION['user_id']) || isset($_SESSION['admin_id'])) {
 <body>
     <div class="container">
         <h1>Expense Prediction System</h1>
-        <a href="login.php" class="btn">User Login</a>
-        <a href="admin_login.php" class="btn admin-btn">Admin Login</a>
-        <a href="register.php" class="btn">User Register</a>
+        <a href="user/login.php" class="btn">User Login</a>
+        <a href="admin/login.php" class="btn admin-btn">Admin Login</a>
+        <a href="user/register.php" class="btn">User Register</a>
     </div>
 </body>
 </html>
