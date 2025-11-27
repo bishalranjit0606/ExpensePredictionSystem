@@ -13,7 +13,7 @@ You can run the entire project with a single command using Docker.
 
 1. **Clone the repository** (if you haven't already):
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/bishalranjit0606/ExpensePredictionSystem.git
    cd ExpensePredictionSystem
    ```
 
