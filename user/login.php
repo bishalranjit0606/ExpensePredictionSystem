@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $stmt->fetch();
     
     if ($user && password_verify($password, $user['password'])) {
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = $user['role'];
         header("Location: dashboard.php");
@@ -156,7 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>Login</h2>
-        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+        <?php if (isset($error)) echo "<p class='error'>" . htmlspecialchars($error) . "</p>"; ?>
         <form method="POST">
             <div class="form-group">
                 <label for="username">Username</label>

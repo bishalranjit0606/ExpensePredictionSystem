@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($admin && password_verify($password, $admin['password'])) {
+            session_regenerate_id(true);
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['role'] = 'admin';
             header("Location: dashboard.php");
@@ -162,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>Admin Panel Login</h2>
-        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+        <?php if (isset($error)) echo "<p class='error'>" . htmlspecialchars($error) . "</p>"; ?>
         <form method="POST">
             <div class="form-group">
                 <label for="username">Admin Username</label>

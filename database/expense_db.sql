@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 26, 2025 at 04:07 PM
+-- Generation Time: Nov 29, 2025 at 07:54 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -160,6 +160,37 @@ INSERT INTO `expenses` (`id`, `user_id`, `amount`, `category`, `expense_date`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `financial_tips`
+--
+
+CREATE TABLE `financial_tips` (
+  `id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `tip` text NOT NULL,
+  `action_link` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `financial_tips`
+--
+
+INSERT INTO `financial_tips` (`id`, `category`, `tip`, `action_link`, `created_at`) VALUES
+(1, 'Food', 'Cook at home more often. Meal prepping can save you significant amounts each week.', 'https://www.budgetbytes.com/', '2025-11-29 18:43:24'),
+(2, 'Food', 'Use a grocery list and stick to it to avoid impulse buys.', NULL, '2025-11-29 18:43:24'),
+(3, 'Food', 'Look for discounts and coupons before shopping.', NULL, '2025-11-29 18:43:24'),
+(4, 'Transport', 'Consider carpooling or using public transportation to save on fuel and parking.', NULL, '2025-11-29 18:43:24'),
+(5, 'Transport', 'Regular vehicle maintenance can prevent costly repairs down the line.', NULL, '2025-11-29 18:43:24'),
+(6, 'Utilities', 'Switch to LED bulbs to reduce electricity consumption.', NULL, '2025-11-29 18:43:24'),
+(7, 'Utilities', 'Unplug electronics when not in use to avoid phantom energy drain.', NULL, '2025-11-29 18:43:24'),
+(8, 'Entertainment', 'Look for free local events or community activities.', NULL, '2025-11-29 18:43:24'),
+(9, 'Entertainment', 'Review your streaming subscriptions and cancel ones you rarely use.', NULL, '2025-11-29 18:43:24'),
+(10, 'Other', 'Set a budget for miscellaneous expenses and track them carefully.', NULL, '2025-11-29 18:43:24'),
+(11, 'Other', 'Build an emergency fund to cover unexpected costs without borrowing.', NULL, '2025-11-29 18:43:24');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -199,6 +230,12 @@ ALTER TABLE `expenses`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `financial_tips`
+--
+ALTER TABLE `financial_tips`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -220,6 +257,12 @@ ALTER TABLE `admin_users`
 --
 ALTER TABLE `expenses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=293;
+
+--
+-- AUTO_INCREMENT for table `financial_tips`
+--
+ALTER TABLE `financial_tips`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`

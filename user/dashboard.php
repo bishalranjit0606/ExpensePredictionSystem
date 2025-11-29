@@ -2,8 +2,8 @@
 session_start();
 require_once '../includes/db_config.php';
 
-if (!isset($_SESSION['user_id']) && !isset($_SESSION['admin_id'])) {
-    header("Location: index.php");
+if (!isset($_SESSION['user_id']) || (isset($_SESSION['role']) && $_SESSION['role'] !== 'user')) {
+    header("Location: ../index.php");
     exit();
 }
 
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $amount = $_POST['amount'];
         $category = $_POST['category'];
         $expense_date = $_POST['expense_date'];
-        $user_id = $_SESSION['user_id'] ?? $_SESSION['admin_id'];
+        $user_id = $_SESSION['user_id'];
         $stmt = $conn->prepare("INSERT INTO expenses (user_id, amount, category, expense_date) VALUES (?, ?, ?, ?)");
         $stmt->execute([$user_id, $amount, $category, $expense_date]);
     } elseif (isset($_POST['update'])) {
@@ -53,19 +53,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $amount = $_POST['amount'];
         $category = $_POST['category'];
         $expense_date = $_POST['expense_date'];
-        $user_id = $_SESSION['user_id'] ?? $_SESSION['admin_id'];
+        $user_id = $_SESSION['user_id'];
         $stmt = $conn->prepare("UPDATE expenses SET amount = ?, category = ?, expense_date = ? WHERE id = ? AND user_id = ?");
         $stmt->execute([$amount, $category, $expense_date, $id, $user_id]);
     } elseif (isset($_POST['delete'])) {
         $id = $_POST['id'];
-        $user_id = $_SESSION['user_id'] ?? $_SESSION['admin_id'];
+        $user_id = $_SESSION['user_id'];
         $stmt = $conn->prepare("DELETE FROM expenses WHERE id = ? AND user_id = ?");
         $stmt->execute([$id, $user_id]);
     }
 }
 
 // Fetch expenses
-$user_id = $_SESSION['user_id'] ?? $_SESSION['admin_id'];
+$user_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("SELECT * FROM expenses WHERE user_id = ? ORDER BY expense_date DESC");
 $stmt->execute([$user_id]);
 $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -472,11 +472,11 @@ if (isset($_POST['logout'])) {
                 </form>
             </div>
             
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') { ?>
-                <div class="admin-link">
-                    <a href="admin.php" class="btn">Admin Panel</a>
-                </div>
-            <?php } ?>
+
+            
+            <div class="admin-link">
+                <a href="recommendations.php" class="btn" style="background-color: var(--accent-color); color: var(--text-dark);">View Smart Recommendations</a>
+            </div>
 
             <div class="info-card prediction">
                 <h3>Next Month's Predicted Expense: <span style="color: var(--primary-dark);">₨<?php echo number_format($prediction, 2); ?></span></h3>

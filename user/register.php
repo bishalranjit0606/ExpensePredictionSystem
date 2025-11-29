@@ -3,20 +3,30 @@ session_start();
 require_once '../includes/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $username = trim($_POST['username']);
+    $password = $_POST['password'];
     
-    try {
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        $stmt->execute([$username, $password]);
-        header("Location: login.php");
-        exit();
-    } catch(PDOException $e) {
-        // Check for duplicate entry error code (specific to MySQL, adjust if using other DB)
-        if ($e->getCode() == '23000') { // SQLSTATE for Integrity Constraint Violation
-            $error = "Username already exists. Please choose a different one.";
-        } else {
-            $error = "An error occurred during registration. Please try again.";
+    // Input Validation
+    if (empty($username) || empty($password)) {
+        $error = "All fields are required.";
+    } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+        $error = "Username can only contain letters, numbers, and underscores.";
+    } elseif (strlen($password) < 6) {
+        $error = "Password must be at least 6 characters long.";
+    } else {
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+        
+        try {
+            $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+            $stmt->execute([$username, $passwordHash]);
+            header("Location: login.php");
+            exit();
+        } catch(PDOException $e) {
+            if ($e->getCode() == '23000') {
+                $error = "Username already exists. Please choose a different one.";
+            } else {
+                $error = "An error occurred during registration. Please try again.";
+            }
         }
     }
 }
@@ -157,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>Create Your Account</h2>
-        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+        <?php if (isset($error)) echo "<p class='error'>" . htmlspecialchars($error) . "</p>"; ?>
         <form method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
