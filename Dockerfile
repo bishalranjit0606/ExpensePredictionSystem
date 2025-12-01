@@ -1,4 +1,9 @@
-FROM php:8.2-apache
+# Stage 1: Database Image
+FROM mysql:8.0 AS database
+COPY database/expense_db.sql /docker-entrypoint-initdb.d/
+
+# Stage 2: Application Image
+FROM php:8.2-apache AS application
 
 # Install system dependencies and PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql

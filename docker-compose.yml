@@ -1,6 +1,8 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      target: application
     ports:
       - "8080:80"
     environment:
@@ -16,8 +18,8 @@ services:
 
   db:
     build:
-      context: ./database
-      dockerfile: Dockerfile
+      context: .
+      target: database
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
