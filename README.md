@@ -21,8 +21,16 @@ You can run the entire project with a single command using Docker.
    ```bash
    docker-compose up -d --build
    ```
+   
+   > **Note**: This setup is fully portable and works on any machine without requiring Docker file sharing configuration. All code and database files are embedded in the Docker images during build.
 
-3. **Access the application**:
+3. **Making code changes**:
+   - If you modify the application code, rebuild the containers:
+     ```bash
+     docker-compose up -d --build
+     ```
+
+4. **Access the application**:
    - For Website: [http://localhost:8080](http://localhost:8080)
    - For Database: [http://localhost:8081](http://localhost:8081)
 
