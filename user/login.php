@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
     
     $stmt = $conn->prepare("SELECT id, password, role FROM users WHERE username = ?");

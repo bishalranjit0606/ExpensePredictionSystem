@@ -43,11 +43,11 @@ Use the following credentials to log in to the application:
 
 - **User Account**:
   - Username: `tester`
-  - Password: `tester123`
+  - Password: `password`
 
 - **Admin Account**:
   - Username: `admin`
-  - Password: `admin123`
+  - Password: `admin`
 
 ### Stop the Application
 

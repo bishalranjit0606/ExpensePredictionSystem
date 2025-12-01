@@ -4,29 +4,63 @@ require_once '../includes/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
+    $full_name = trim($_POST['full_name']);
+    $email = trim($_POST['email']);
+    $phone_number = trim($_POST['phone_number']);
     $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
     
     // Input Validation
-    if (empty($username) || empty($password)) {
+    if (empty($username) || empty($full_name) || empty($email) || empty($phone_number) || empty($password) || empty($confirm_password)) {
         $error = "All fields are required.";
     } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
         $error = "Username can only contain letters, numbers, and underscores.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
+    } elseif ($password !== $confirm_password) {
+        $error = "Passwords do not match.";
     } elseif (strlen($password) < 6) {
         $error = "Password must be at least 6 characters long.";
     } else {
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
         
         try {
-            $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-            $stmt->execute([$username, $passwordHash]);
+            // Check for existing user
+            $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ? OR phone_number = ?");
+            $stmt->execute([$username, $email, $phone_number]);
+            if ($stmt->rowCount() > 0) {
+                // Determine which field is duplicate (simplified check)
+                $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Ideally we would check each field individually for a precise error message
+                // For now, let's do individual checks for better UX
+                
+                $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+                $stmt->execute([$username]);
+                if ($stmt->rowCount() > 0) {
+                    throw new Exception("Username already exists.");
+                }
+
+                $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+                $stmt->execute([$email]);
+                if ($stmt->rowCount() > 0) {
+                    throw new Exception("Email already exists.");
+                }
+
+                $stmt = $conn->prepare("SELECT id FROM users WHERE phone_number = ?");
+                $stmt->execute([$phone_number]);
+                if ($stmt->rowCount() > 0) {
+                    throw new Exception("Phone number already exists.");
+                }
+            }
+
+            $stmt = $conn->prepare("INSERT INTO users (username, full_name, email, phone_number, password) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$username, $full_name, $email, $phone_number, $passwordHash]);
             header("Location: login.php");
             exit();
+        } catch(Exception $e) {
+            $error = $e->getMessage();
         } catch(PDOException $e) {
-            if ($e->getCode() == '23000') {
-                $error = "Username already exists. Please choose a different one.";
-            } else {
-                $error = "An error occurred during registration. Please try again.";
-            }
+             $error = "An error occurred during registration. Please try again.";
         }
     }
 }
@@ -170,12 +204,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (isset($error)) echo "<p class='error'>" . htmlspecialchars($error) . "</p>"; ?>
         <form method="POST">
             <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" required placeholder="Enter your full name" value="<?php echo isset($full_name) ? htmlspecialchars($full_name) : ''; ?>">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="text" id="email" name="email" required placeholder="Enter your email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>">
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone Number</label>
+                <input type="text" id="phone_number" name="phone_number" required placeholder="Enter your phone number" value="<?php echo isset($phone_number) ? htmlspecialchars($phone_number) : ''; ?>">
+            </div>
+            <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required autocomplete="username" placeholder="Choose a username">
+                <input type="text" id="username" name="username" required autocomplete="username" placeholder="Choose a username" value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Create a strong password">
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password" placeholder="Confirm your password">
             </div>
             <button type="submit" class="btn">Register</button>
         </form>
