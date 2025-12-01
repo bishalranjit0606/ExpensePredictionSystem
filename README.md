@@ -23,7 +23,7 @@ You can run this project using either **Docker (Recommended)** or **XAMPP (Manua
 
 ---
 
-## Option A: Run with Docker (Easiest Way) ⭐
+## Option A: Run with Docker (Easiest Way) 
 
 You can run this project easily using Docker without setting up XAMPP manually.
 
